@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+CLNST
+		</title>
+	</head>
+<style>
+
+body {
+  background-image: linear-gradient(to bottom, #222222, #000000);
+}
+
+.carousel {
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 60%;
+  border: 3px solid blue;
+  overflow-x: scroll;
+  transition: transform 0.5s ease;
+  scroll-behavior: smooth;
+  background-color: lightgray;
+}
+
+.carousel-items {
+  display: flex;
+  width: 300%; /* Depende do número de slides */
+  height: 100%;
+  transition: transform 0.5s ease;
+  border: 3px solid black;
+  justify-content: space-between;
+}
+
+.carousel-item {
+  width: 30%; /* Depende do número de slides */
+  height: 99%;
+  padding: 0.5%;
+  box-sizing: border-box;
+  border: 3px solid darkgray;
+  flex-grow: 1;
+  transition: transform 0.5s ease;
+  margin: 0 1%;
+  border-radius: 2%/6%;
+  background-color: gray;
+  transform: translateZ(0);
+  transform-style: preserve-3d;
+}
+
+.carousel-control {
+  position: absolute;
+  top: 61%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 4rem;
+}
+
+.carousel-control.prev {
+  left: 0%;
+}
+.carousel-control.next {
+  right: 0%;
+}
+
+.carousel-item.active {
+  display: block;
+}
+</style>
+
+<body>
+
+<div id="carrosel" class="carousel">
+  <div id="tripa_carrosel" class="carousel-items">
+    <div class="carousel-item active" id="item1">
+      <h2>Slide 1</h2>
+      <p>Este é o primeiro slide.</p>
+    </div>
+    <div class="carousel-item" id="item2">
+      <h2>Slide 2</h2>
+      <p>Este é o segundo slide.</p>
+    </div>
+    <div class="carousel-item" id="item3">
+      <h2>Slide 3</h2>
+      <p>Este é o terceiro slide.</p>
+    </div>
+  </div>
+</div>
+
+  <button id="tras" class="carousel-control prev" onclick="changeSlide(-1)">trás</button>
+  <button id="frente" class="carousel-control next" onclick="changeSlide(1)">frente</button>
+
+<script>
+
+var numero_grupos = 3;
+
+var carrosel       = document.getElementById("carrosel");
+var tripa_carrosel = document.getElementById("tripa_carrosel");
+var divs_do_carrosel = document.getElementsByClassName("carrosel_item");
+
+var botao_tras = document.getElementById("tras");
+var botao_frente = document.getElementById("frente");
+
+botao_tras.style.top = carrosel.getBoundingClientRect().bottom; 
+
+
+function changeSlide(indice){
+	
+
+	let largura_item = tripa_carrosel.getBoundingClientRect().width / numero_grupos;
+	
+	carrosel.scrollLeft = carrosel.scrollLeft - indice * largura_item;
+
+}
+
+</script>
+</body>
+</html>
+ 

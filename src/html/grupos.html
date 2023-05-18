@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<style>
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-inner {
+    width: 80%;
+    height: 60%;
+}
+
+.carousel-item {
+    height: 100%;
+}
+
+.carousel-control-prev, .carousel-control-next {
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    background-size: 100%, 100%;
+}
+</style>
+<head>
+    <title>Minha Página</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div id="carouselExample" class="carousel slide" data-ride="carousel" data-interval="false">
+        <div class="carousel-inner">
+            <!-- Aqui você deve adicionar seus 10 quadros como itens de carrossel -->
+            <div class="carousel-item active">
+                <div class="h-100 d-flex flex-column align-items-center justify-content-center text-center">
+                    <!-- Adicione seu conteúdo aqui -->
+					teste
+                </div>
+            </div>
+            <div class="carousel-item active">
+                <div class="h-100 d-flex flex-column align-items-center justify-content-center text-center">
+                    <!-- Adicione seu conteúdo aqui -->
+					teste2
+                </div>
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExample" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Anterior</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExample" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Próximo</span>
+        </a>
+    </div>
+</body>
+</html>
+<script>
+$('.carousel').carousel({
+  interval: false,
+  wrap: false
+})
+
+
+
+</script>

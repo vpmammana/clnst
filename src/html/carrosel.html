@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+
+		</title>
+	</head>
+	<style>
+.carousel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  transition: transform 0.5s ease;
+}
+
+.carousel-items {
+  display: flex;
+  width: 300%; /* Depende do número de slides */
+  transition: transform 0.5s ease;
+}
+
+.carousel-item {
+  width: 30%; /* Depende do número de slides */
+  padding: 20px;
+  box-sizing: border-box;
+  border: 3px solid red;
+  transition: transform 0.5s ease;
+}
+
+.carousel-control {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.carousel-control.prev {
+  left: 10px;
+}
+
+.carousel-control.next {
+  right: 10px;
+}
+
+.carousel-item.active {
+  display: block;
+}
+
+
+	</style>
+
+<body>
+<div class="carousel">
+  <div class="carousel-items">
+    <div class="carousel-item active" id="item1">
+      <h2>Slide 1</h2>
+      <p>Este é o primeiro slide.</p>
+    </div>
+    <div class="carousel-item" id="item2">
+      <h2>Slide 2</h2>
+      <p>Este é o segundo slide.</p>
+    </div>
+    <div class="carousel-item" id="item3">
+      <h2>Slide 3</h2>
+      <p>Este é o terceiro slide.</p>
+    </div>
+  </div>
+</div>
+  <button class="carousel-control prev" onclick="changeSlide(-1)">trás</button>
+  <button class="carousel-control next" onclick="changeSlide(1)">frente</button>
+
+<script>
+var slideIndex = 0;
+
+function changeSlide(step) {
+  var items = document.getElementsByClassName('carousel-item');
+  slideIndex = (slideIndex + step + items.length) % items.length;
+  Array.prototype.forEach.call(items, function (item, index) {
+    item.style.transform = 'translateX(' + (index - slideIndex) * 100 + '%)';
+  });
+}
+
+// Inicia o carrossel na página carregada
+changeSlide(0);
+
+</script>
+</body>
+</html>
+
