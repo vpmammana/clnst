@@ -25,15 +25,18 @@ SELECT
     substring_index(group_concat(d.descricao order by nome_versao desc separator "@#$"),"@#$",1) as descricao_diretriz,
     substring_index(group_concat(nome_proposta order by nome_versao desc separator "@#$"),"@#$",1) as nome_proposta,
     substring_index(group_concat(nome_versao order by nome_versao desc separator "@#$"),"@#$",1) as nome_versao,
-    substring_index(group_concat(corpo_da_proposta order by nome_versao desc separator "@#$"),"@#$",1) as ultima_versao
+    substring_index(group_concat(corpo_da_proposta order by nome_versao desc separator "@#$"),"@#$",1) as ultima_versao,
+    substring_index(group_concat(nome_tipo_de_participacao order by nome_versao desc separator "@#$"),"@#$",1) as nome_tipo_de_participacao
 from
     versoes as v,
     propostas as p,
     grupos as g,
-    diretrizes as d
+    diretrizes as d,
+	tipos_de_participacoes tp
 where
     v.id_proposta = p.id_chave_proposta and
     p.id_grupo = id_chave_grupo and
+	tp.id_chave_tipo_de_participacao = g.id_tipo_de_participacao and
     p.id_diretriz=id_chave_diretriz
 group by
     v.id_proposta;
@@ -56,6 +59,7 @@ if ($result->num_rows > 0) {
 		$campos[$indice_conta][]=$row["nome_versao"];
 		$campos[$indice_conta][]=$row["ultima_versao"];
 		$campos[$indice_conta][]=$row["descricao_diretriz"];
+		$campos[$indice_conta][]=$row["nome_tipo_de_participacao"];
 		$indice_conta++;	
 		$velho_grupo = $nome_grupo;
     }
@@ -115,7 +119,7 @@ body {
 .carousel-item {
   width: '.round(90/$numero_grupos).'%; 
   height: 98%;
-  padding: 0.5%;
+  padding: 0.1%;
   box-sizing: border-box;
   border: 3px solid darkgray;
   flex-grow: 1;
@@ -162,6 +166,12 @@ body {
 	font-size: 2rem;
 	font-weight: bold;
 }
+
+.subtitulo {
+	font-size: 1.5rem;
+	color: blue;
+}
+
 
 .diretriz {
 	font-size: 1.6rem;
@@ -225,7 +235,7 @@ echo '
     <div class="carousel-item active grupo" data-ordem="'.$conta_grupos.'" id="'.$campos[$chave][0].'">
 	  <table class="tabela_do_grupo">
 	  <tr>
-      <td><b class="titulo">'.$campos[$chave][0].'</b></td>
+      <td><b class="titulo">'.$campos[$chave][0].'<br></b><b class="subtitulo">(participação '.$campos[$chave][6].')</b></td>
 	  <td><b class="diretriz">'.$campos[$chave][5].'</b></td>
 	  </tr>';
 	  $conta_grupos++;
