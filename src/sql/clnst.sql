@@ -37,11 +37,10 @@ DROP TABLE IF EXISTS paineis_de_interface;
 			UNIQUE(nome_tipo_de_status)
 		);
 
-		INSERT INTO tipos_de_status (nome_tipo_de_status) VALUES ("submissão de proposta");
-		INSERT INTO tipos_de_status (nome_tipo_de_status) VALUES ("em espera");
-		INSERT INTO tipos_de_status (nome_tipo_de_status) VALUES ("em debate");
-		INSERT INTO tipos_de_status (nome_tipo_de_status) VALUES ("leitura das propostas");
-		INSERT INTO tipos_de_status (nome_tipo_de_status) VALUES ("destaques para propostas");
+		INSERT INTO tipos_de_status (nome_tipo_de_status) VALUES ("submissão de proposta"); #estará em condições para receber propostas digitadas pelo usuário
+		INSERT INTO tipos_de_status (nome_tipo_de_status) VALUES ("em espera"); #iddle
+		INSERT INTO tipos_de_status (nome_tipo_de_status) VALUES ("leitura das propostas"); 
+		INSERT INTO tipos_de_status (nome_tipo_de_status) VALUES ("destaques de proposta"); 
 		INSERT INTO tipos_de_status (nome_tipo_de_status) VALUES ("inscricoes para fala");
 		INSERT INTO tipos_de_status (nome_tipo_de_status) VALUES ("votação das propostas nos GTs");
 		INSERT INTO tipos_de_status (nome_tipo_de_status) VALUES ("votação das propostas nas Plenárias");
@@ -122,16 +121,6 @@ DROP TABLE IF EXISTS paineis_de_interface;
 			unique(nome_grupo)
 		);
 
-		CREATE TABLE transicoes_de_status (
-			id_chave_transicao_de_status INT AUTO_INCREMENT PRIMARY KEY,
-			nome_transicao_de_status VARCHAR(100),
-			momento_da_transicao TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6),
-			id_tipo_de_status INT,
-			id_grupo INT,
-			FOREIGN KEY (nome_transicao_de_status) REFERENCES tipos_de_status(nome_tipo_de_status),
-			FOREIGN KEY (id_grupo) REFERENCES grupos(id_chave_grupo),
-			FOREIGN KEY (id_tipo_de_status) REFERENCES tipos_de_status(id_chave_tipo_de_status)
-		);
 
 
 		CREATE TABLE participantes (
@@ -257,6 +246,19 @@ DROP TABLE IF EXISTS paineis_de_interface;
 			id_proposta int,
 			unique(nome_versao),
 			FOREIGN KEY (id_proposta) REFERENCES propostas(id_chave_proposta)
+		);
+
+		CREATE TABLE transicoes_de_status (
+			id_chave_transicao_de_status INT AUTO_INCREMENT PRIMARY KEY,
+			nome_transicao_de_status VARCHAR(100),
+			momento_da_transicao TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6),
+			id_proposta INT,
+			id_tipo_de_status INT,
+			id_grupo INT,
+			FOREIGN KEY (id_proposta) REFERENCES propostas(id_chave_proposta),
+			FOREIGN KEY (nome_transicao_de_status) REFERENCES tipos_de_status(nome_tipo_de_status),
+			FOREIGN KEY (id_grupo) REFERENCES grupos(id_chave_grupo),
+			FOREIGN KEY (id_tipo_de_status) REFERENCES tipos_de_status(id_chave_tipo_de_status)
 		);
 
 
@@ -485,6 +487,15 @@ DELIMITER ;
 CALL insere_proposta("Grupo 1", "Proposta 1", "Financiar melhor o SUS");
 CALL insere_proposta("Grupo 1", "Proposta 2", "Tornar o SUS mais amplo");
 CALL insere_proposta("Grupo 2", "Proposta 3", "Incluir uma pauta multi-setorial no SUS");
+CALL insere_proposta("Grupo 2", "Proposta 3a", "Incluir uma pauta multi-setorial no SUS");
+CALL insere_proposta("Grupo 2", "Proposta 3b", "Incluir uma pauta multi-setorial no SUS");
+CALL insere_proposta("Grupo 2", "Proposta 3c", "Incluir uma pauta multi-setorial no SUS");
+CALL insere_proposta("Grupo 2", "Proposta 3d", "Incluir uma pauta multi-setorial no SUS");
+CALL insere_proposta("Grupo 2", "Proposta 3f", "Incluir uma pauta multi-setorial no SUS");
+CALL insere_proposta("Grupo 2", "Proposta 3g", "Incluir uma pauta multi-setorial no SUS");
+CALL insere_proposta("Grupo 2", "Proposta 3h", "Incluir uma pauta multi-setorial no SUS");
+CALL insere_proposta("Grupo 2", "Proposta 3i", "Incluir uma pauta multi-setorial no SUS");
+CALL insere_proposta("Grupo 2", "Proposta 3j", "Incluir uma pauta multi-setorial no SUS");
 CALL insere_proposta("Grupo 3", "Proposta 4", "Rever as medidas privatizantes do SUS no que se refere à saúde do trabalhador");
 CALL insere_proposta("Grupo 4", "Proposta 5", "Pensar formas de integrar ações do MTE com o MS");
 CALL insere_proposta("Grupo 5", "Proposta 6", "Tornar a pauta de segurança do trabalho presente no dia a dia do SUS");

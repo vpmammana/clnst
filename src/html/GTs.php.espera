@@ -81,9 +81,7 @@ SELECT
     substring_index(group_concat(nome_proposta order by nome_versao desc separator "@#$"),"@#$",1) as nome_proposta,
     substring_index(group_concat(nome_versao order by nome_versao desc separator "@#$"),"@#$",1) as nome_versao,
     substring_index(group_concat(corpo_da_proposta order by nome_versao desc separator "@#$"),"@#$",1) as ultima_versao,
-    substring_index(group_concat(nome_tipo_de_participacao order by nome_versao desc separator "@#$"),"@#$",1) as nome_tipo_de_participacao,
-	group_concat(corpo_da_proposta order by nome_versao desc separator "@#$") as todas_versoes,
-	id_chave_proposta
+    substring_index(group_concat(nome_tipo_de_participacao order by nome_versao desc separator "@#$"),"@#$",1) as nome_tipo_de_participacao
 from
     versoes as v,
     propostas as p,
@@ -117,9 +115,6 @@ if ($result->num_rows > 0) {
 		$campos[$indice_conta][]=$row["ultima_versao"];
 		$campos[$indice_conta][]=$row["descricao_diretriz"];
 		$campos[$indice_conta][]=$row["nome_tipo_de_participacao"];
-		$campos[$indice_conta][]=$row["todas_versoes"];
-		$campos[$indice_conta][]=$row["id_chave_proposta"];
-		$todas_versoes= explode("@#$",$row["todas_versoes"]);
 		$indice_conta++;	
 		$velho_grupo = $nome_grupo;
     }
@@ -189,30 +184,14 @@ body {
   background-color: gray;
   transform: translateZ(0);
   transform-style: preserve-3d;
-  overflow-y: scroll;
 }
 
 .proposta{
 	border-bottom: 12px solid gray;
-	background-color: rgba(25,100,100,0.8);
+	background-color: black;
 	color: white;
 	padding: 1%;
-}
-
-.titulo_proposta {
-	font-size:1.5rem;
-	color: white;
-	font-weight: bold;
-
-}
-.texto_proposta {
-	font-size:1.3rem;
-	color: white;
-
-}
-.horario_proposta {
-	font-size:1.1rem;
-	color: rgb(0,0,0,0.9);
+	font-size:2rem;
 }
 
 .carousel-control {
@@ -260,11 +239,6 @@ body {
 	border-collapse: collapse;
 }
 
-.tabela_interna_da_proposta {
-	border-collapse: collapse;
-
-}
-
 .tabela_do_participante {
 	width: 100%;
 	height: 100%;
@@ -277,26 +251,6 @@ body {
 	width: 1%;
 	word-wrap: break-word;
 	border: 1px solid black;
-}
-.botoes_proposta {
-  background-color: rgba(0, 0, 0, 0.9);
-  color: white;
-  border: none;
-  padding: 1px;
-  cursor: pointer;
-  font-size: 1.2rem;
-  display: block;
-  margin: 0;
-  width: 98%;
-}
-
-.botoes_proposta:hover {
-	background-color: rgba(0,0,0,0.5);
-}
-
-.botoes_proposta:active {
-	background-color: rgba(0,0,1,0.5);
-	border: 2px solid yellow;
 }
 .botoes_status {
   background-color: rgba(0, 0, 0, 0.9);
@@ -354,51 +308,32 @@ body {
 	font-weight: bold;
 }
 
-.cell_caption_mudanca_status {
-	font-size: 1.5rem;
-	font-weight: bold;
-}
-
 .cell_papel {
 	font-size: 1.4rem;
 	font-weight: bold;
 }
 
 .margem {
-text-align: center;
 }
 
 .cell_status {
-	font-size: 1.5rem;
+	font-size: 2rem;
 	background-color: blue;
 	color: white;
 	font-weight: bold;
 	padding: 0.5%;
 	text-align: center;
 	width: 60%;
-	margin: 0 auto;
 }
 
 .linha_muda_status {
-			height: 10px;
+			height: 100px;
 }
 
 .cell_direita {
 	text-align: right;
 	vertical-align: middle;
 }
-
-.borda_direita {
-    border-right: 1px solid black;
-	padding-right: 10px;
-}
-
-.borda_esquerda {
-    border-left: 1px solid black;
-	padding-left: 10px;
-}
-
-
 </style>
 
 <body>
@@ -407,10 +342,10 @@ text-align: center;
 if (strpos($paineis, "mudanca_status")){
 		echo '
 		<tr class="linha_muda_status">
-		<td class="cell_caption_mudanca_status ">Mude o Status aqui <b style="color: yellow; font-size: 2rem">&rarr;</b> </td>
 		<td><button id="muda_status_propostas" class="botoes_status" onclick="">Abre para Propostas</button></td>
-		<td><button id="muda_status_leitura" class="botoes_status" onclick="">Leitura e Destaques</button></td>
+		<td><button id="muda_status_leitura" class="botoes_status" onclick="">Ler Propostas</button></td>
 		<td><button id="muda_status_aguarde" class="botoes_status" onclick="">Inscrições para fala</button></td>
+		<td></td>
 		<td><button id="muda_status_aguarde" class="botoes_status" onclick="">Aguarde<br>por favor</button></td>
 		</tr>
 		';
@@ -419,7 +354,7 @@ if (strpos($paineis, "mudanca_status")){
 	else {
 	}
 
-echo '<tr class="linha_muda_status">
+echo '<tr>
 		<td class="cell_left cell_identidade">
 			'.$nome_participante_param.'
 		</td>
@@ -438,13 +373,13 @@ if (strpos($paineis, "todos_grupos")){
 		echo '
 		</td>
 		<td class="cell_centrada">
-			<button id="adiciona_proposta2" class="botoes" onclick="checa_status(`'.$nome_grupo_param.'`)">Sincroniza</button>
+			<button id="adiciona_proposta2" class="botoes" onclick="checa_status(`'.$nome_grupo_param.'`)">Atualiza</button>
 		</td>
 		<td class="cell_direita">
 			<img height="60px" src="FUNDACENTRO-RSDATA.jpg">
 		</td>
 	</tr>
-	<tr class="linha_muda_status">
+	<tr>
 		<td class="cell_left cell_papel">
 			'.$papeis.'
 		</td>
@@ -452,15 +387,15 @@ if (strpos($paineis, "todos_grupos")){
 		</td>
 		<td>
 		</td>
-		<td class="cell_centrada margem">
-			<div id="status" class="cell_status"></div>
+		<td>
 		</td>
-		<td class="cell_centrada cell_identidade">
+		<td class="cell_direita cell_identidade">
 			CLNST
 		</td>
 	</tr>
 	<tr>
-		<td>
+		<td class="cell_left margem">
+			<div id="status" class="cell_status"></div>
 		</td>
 		<td>
 		</td>
@@ -498,44 +433,8 @@ echo '
 	  $conta_grupos++;
 }
 
-echo '
-<tr>
-<td colspan="2">
-		<div class="proposta" >
-		<table class="tabela_interna_da_proposta" width="100%">
-			<tr>
-				<td class="titulo_proposta borda_direita">			
-						'.$campos[$chave][2].'
-				</td>
-				<td class="texto_proposta borda_esquerda">
-						'.$campos[$chave][4].'
-				</td>
-			<tr>
-			<tr>
-				<td class="horario_proposta borda_direita">
-					'.str_replace(" ", "<br>",$campos[$chave][3]).'
-				</td>
-				<td class="borda_esquerda">';
-
-if (strpos($paineis, "insercao_proposta_votacao_inscricao_destaque") && $campos[$chave][0]==$nome_grupo_param){
-echo '
-				<div>
-				<table width="100%" >
-				<tr>
-					<td><button id="abre_destaques" class="botoes_proposta" onclick="seta_status(`'.$nome_grupo.'`, `destaques de proposta`, '.$campos[$chave][8].')">Abre Destaques</button></td>
-					<td><button id="fecha_destaques" class="botoes_proposta" onclick="">Fecha Destaques</button></td>
-					<td><button id="abre_votacao" class="botoes_proposta" onclick="">Abre Votação</button></td>
-					<td><button id="abre_votacao" class="botoes_proposta" onclick="">Fecha Votação</button></td>
-				</tr>
-				</table>
-				</div>';
-}
-echo '
-				</td>
-			</tr>
-		</table>
-		</div>
-</td>
+echo '<tr><td class="proposta"><div>'.$campos[$chave][2].'<br>'.$campos[$chave][3].'</div></td>
+<td class="proposta">'.$campos[$chave][4].'</td>
 </tr>';
 
 $velho_grupo = $campos[$chave][0]; // nome_grupo
@@ -555,19 +454,6 @@ echo' <button id="tras" class="carousel-control prev" onclick="changeSlide(-1)">
  
 echo '
 <script>
-
-function seta_status(nome_grupo, status, proposta){
-			var resposta="";
-			var url="define_status.php?nome_grupo_param="+nome_grupo+"&status_param="+status+"&proposta_param="+proposta;
-			var oReq=new XMLHttpRequest();
-            oReq.open("GET", url, false);
-            oReq.onload = function (e) {
-                resposta=oReq.responseText;
-				document.getElementById("status").innerText = resposta;
-                //alert(resposta);
-            }
-                oReq.send();
-}
 
 function checa_status(nome_grupo){
 			var resposta="";
