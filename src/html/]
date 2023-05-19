@@ -38,7 +38,7 @@ where
     a.id_painel_de_interface=id_chave_painel_de_interface and
     a.id_papel=id_chave_papel and
     a.id_papel=pap.id_papel and
-    id_chave_participante = ".$id_participante_param."
+    id_chave_participante = 14
     order by nome_grupo, nome_participante, nome_papel, nome_painel_de_interface;";
 
 $result_inicial = $conn->query($sql_inicial);
@@ -51,8 +51,8 @@ if ($result_inicial->num_rows > 0) {
 // Loop para exibir os dados retornados
 	$indice_conta=0;
     while ($row_inicial = $result_inicial->fetch_assoc()) {
-		if (strpos($nome_grupo_param,$row_inicial["nome_grupo"])===false) {$nome_grupo_param =$nome_grupo_param.$row_inicial["nome_grupo"]." ";}
-		if (strpos($nome_participante_param, $row_inicial["nome_participante"])===false){ $nome_participante_param = $nome_participante_param.$row_inicial["nome_participante"]." ";}
+		if (strpos($nome_grupo_param,$row_inicial["nome_grupo"])===false) {$nome_grupo_param = $nome_grupo_param.$row_inicial["nome_grupo"]." ";}
+		if (strpos($nome_participante_param,$row_inicial["nome_participante"])===false) {$nome_participante_param = $nome_participante_param.$row_inicial["nome_participante"]." ";}
 		if (strpos($papeis,$row_inicial["nome_papel"])===false) {$papeis=$papeis.$row_inicial["nome_papel"]." ";}
 		if (strpos($paineis,$row_inicial["nome_painel_de_interface"])===false) {$paineis=$paineis.$row_inicial["nome_painel_de_interface"]." ";}
     }
@@ -62,8 +62,10 @@ if ($result_inicial->num_rows > 0) {
 
 $nome_grupo_param = trim($nome_grupo_param);
 $nome_participante_param = trim($nome_participante_param);
-$papeis  = trim($papeis);
+$papeis = trim($papeis);
 $paineis = trim($paineis);
+
+
 
 // echo "(".$nome_grupo_param.")<br>";
 // echo "(".$nome_participante_param.")<br>";
@@ -156,7 +158,7 @@ body {
   width: 100%;
   height: 60%;
   border: 3px solid blue;
-  overflow-x: hidden;
+  overflow-x: scroll;
   transition: transform 0.5s ease;
   scroll-behavior: smooth;
   background-color: lightgray;
@@ -206,7 +208,6 @@ body {
   font-size: 4rem;
 }
 
-
 .carousel-control.prev {
   left: 0%;
 }
@@ -239,18 +240,6 @@ body {
 	border-collapse: collapse;
 }
 
-.tabela_do_participante {
-	width: 100%;
-	height: 100%;
-	border-collapse: collapse;
-	table-layout: fixed;
-}
-
-.tabela_do_participante td {
-	width: 1%;
-	word-wrap: break-word;
-}
-
 .botoes {
   background-color: rgba(0, 0, 0, 0.9);
   color: white;
@@ -260,16 +249,6 @@ body {
   font-size: 2rem;
   display: block;
   margin: 0 auto;
-  width: 98%;
-}
-
-.botoes:hover {
-	background-color: rgba(0,0,0,0.5);
-}
-
-.botoes:active {
-	background-color: rgba(0,0,1,0.5);
-	border: 2px solid yellow;
 }
 
 .cell_centrada {
@@ -277,96 +256,34 @@ body {
 	vertical-align: middle;
 }
 
-.cell_left {
+.cell_cadastro {
 	text-align: left;
 	vertical-align: middle;
+	font-size: 1.5rem;
 }
 
-.cell_identidade {
-	font-size: 2rem;
-	font-weight: bold;
-}
-
-.cell_papel {
-	font-size: 1.4rem;
-	font-weight: bold;
-}
-
-.margem {
-}
-
-.cell_status {
-	font-size: 2rem;
-	background-color: blue;
-	color: white;
-	font-weight: bold;
-	padding: 0.5%;
-	text-align: center;
-	width: 60%;
-}
-
-.cell_direita {
-	text-align: right;
-	vertical-align: middle;
-}
 </style>
 
 <body>
 <div class="entrada_de_dados">
-<table class="tabela_do_participante">
+<table class="tabela_do_grupo">
 	<tr>
-		<td class="cell_left cell_identidade">
-			'.$nome_participante_param.'
+		<td class="cell_cadastro">'.$nome_participante_param.'</td>
+	</tr>
+	<tr>
+		<td class="cell_cadastro">'.$papeis.'</td>
+	</tr>
+	<tr>
+		<td class="cell_centrada">
+			<button id="adiciona_proposta" class="botoes" onclick="">Nova Proposta +</button>
 		</td>
 		<td class="cell_centrada">
-			<button id="adiciona_proposta" class="botoes" onclick="">Proposta +</button>
-		</td>
-		<td class="cell_centrada">';
-
-if (strpos($paineis, "todos_grupos")){
-		echo '<button id="Meu Grupo" class="botoes" onclick="va_pro_meu_grupo(nome_grupo_param)">Meu Grupo</button>';
-		}
-	else {
-	}
-
-
-		echo '
+			<button id="Meu Grupo" class="botoes" onclick="va_pro_meu_grupo(nome_grupo_param)">Meu Grupo</button>
 		</td>
 		<td class="cell_centrada">
-			<button id="adiciona_proposta2" class="botoes" onclick="checa_status(`'.$nome_grupo_param.'`)">Atualiza</button>
-		</td>
-		<td class="cell_direita">
-			<img height="60px" src="FUNDACENTRO-RSDATA.jpg">
+			<button id="adiciona_proposta2" class="botoes" onclick="">Nova Proposta</button>
 		</td>
 	</tr>
-	<tr>
-		<td class="cell_left cell_papel">
-			'.$papeis.'
-		</td>
-		<td>
-		</td>
-		<td>
-		</td>
-		<td>
-		</td>
-		<td class="cell_direita cell_identidade">
-			CLNST
-		</td>
-	</tr>
-	<tr>
-		<td class="cell_left margem">
-			<div id="status" class="cell_status"></div>
-		</td>
-		<td>
-		</td>
-		<td>
-		</td>
-		<td>
-		</td>
-		<td>
-		</td>
-	</tr>
-
 </table>
 </div>
 <div id="carrosel" class="carousel">
@@ -403,34 +320,16 @@ echo '
   </table>
   </div>
   </div>
-</div>';
+</div>
 
-if (strpos($paineis, "todos_grupos")){
+  <button id="tras" class="carousel-control prev" onclick="changeSlide(-1)">trás</button>
+  <button id="frente" class="carousel-control next" onclick="changeSlide(1)">frente</button>
 
-echo' <button id="tras" class="carousel-control prev" onclick="changeSlide(-1)">trás</button>
-  <button id="frente" class="carousel-control next" onclick="changeSlide(1)">frente</button>';
-}
-
- 
-echo '
 <script>
-
-function checa_status(nome_grupo){
-			var resposta="";
-			var url="verifica_status.php?nome_grupo_param="+nome_grupo;
-			var oReq=new XMLHttpRequest();
-            oReq.open("GET", url, false);
-            oReq.onload = function (e) {
-                resposta=oReq.responseText;
-				document.getElementById("status").innerText = resposta;
-                //alert(resposta);
-            }
-                oReq.send();
-}
-
 
 var numero_grupos = '.$numero_grupos.';
 var nome_grupo_param = "'.$nome_grupo_param.'";
+
 var carrosel       = document.getElementById("carrosel");
 var tripa_carrosel = document.getElementById("tripa_carrosel");
 var divs_do_carrosel = document.getElementsByClassName("carrosel_item");
@@ -442,9 +341,7 @@ var scroll_dos_grupos = [];
 var lista_de_grupos = document.getElementsByClassName("grupo");
 var largura_item = tripa_carrosel.getBoundingClientRect().width / numero_grupos;
 
-// botao_tras.style.top = carrosel.getBoundingClientRect().bottom; 
-
-checa_status("'.$nome_grupo_param.'");
+botao_tras.style.top = carrosel.getBoundingClientRect().bottom; 
 
 function inicializa_posicoes(){
 	for (var i=0; i < lista_de_grupos.length; i++){

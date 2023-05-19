@@ -17,11 +17,14 @@ DROP TABLE IF EXISTS tipos_de_participacoes;
 DROP TABLE IF EXISTS tipos_de_status;
 DROP TABLE IF EXISTS paineis_de_interface;
 
+
+
 		CREATE TABLE paineis_de_interface (
 			id_chave_painel_de_interface INT AUTO_INCREMENT PRIMARY KEY,
 			nome_painel_de_interface VARCHAR(100),
 			UNIQUE(nome_painel_de_interface)
 		);
+
 		INSERT INTO paineis_de_interface (nome_painel_de_interface) VALUES ("insercao_proposta_votacao_inscricao_destaque");
 		INSERT INTO paineis_de_interface (nome_painel_de_interface) VALUES ("meu_grupo");
 		INSERT INTO paineis_de_interface (nome_painel_de_interface) VALUES ("todos_grupos");
@@ -35,6 +38,7 @@ DROP TABLE IF EXISTS paineis_de_interface;
 		);
 
 		INSERT INTO tipos_de_status (nome_tipo_de_status) VALUES ("submissão de proposta");
+		INSERT INTO tipos_de_status (nome_tipo_de_status) VALUES ("em espera");
 		INSERT INTO tipos_de_status (nome_tipo_de_status) VALUES ("em debate");
 		INSERT INTO tipos_de_status (nome_tipo_de_status) VALUES ("leitura das propostas");
 		INSERT INTO tipos_de_status (nome_tipo_de_status) VALUES ("destaques para propostas");
@@ -67,23 +71,23 @@ DROP TABLE IF EXISTS paineis_de_interface;
 			id_chave_autorizacao INT AUTO_INCREMENT PRIMARY KEY,
 			nome_autorizacao VARCHAR(100),
 			id_papel INT,
-			id_paineis_de_interface INT,
+			id_painel_de_interface INT,
 			FOREIGN KEY (id_papel) REFERENCES papeis(id_chave_papel),
-			FOREIGN KEY (id_paineis_de_interface) REFERENCES paineis_de_interface(id_chave_painel_de_interface),
+			FOREIGN KEY (id_painel_de_interface) REFERENCES paineis_de_interface(id_chave_painel_de_interface),
 			UNIQUE(nome_autorizacao)
 		);
-		INSERT INTO autorizacoes (nome_autorizacao, id_papel, id_paineis_de_interface) VALUES ("Coordenador(a) pode votar, inscrever, fazer destaque e inserir proposta",(SELECT id_chave_papel FROM papeis where nome_papel="coordenador(a)"),(SELECT id_chave_painel_de_interface FROM paineis_de_interface WHERE nome_painel_de_interface = "insercao_proposta_votacao_inscricao_destaque"));
-		INSERT INTO autorizacoes (nome_autorizacao, id_papel, id_paineis_de_interface) VALUES ("Coordenador(a) pode mudar o status da reunião",(SELECT id_chave_papel FROM papeis where nome_papel="coordenador(a)"),(SELECT id_chave_painel_de_interface FROM paineis_de_interface WHERE nome_painel_de_interface = "mudanca_status"));
-		INSERT INTO autorizacoes (nome_autorizacao, id_papel, id_paineis_de_interface) VALUES ("Coordenador(a) tem acesso a todos os grupos",(SELECT id_chave_papel FROM papeis where nome_papel="coordenador(a)"),(SELECT id_chave_painel_de_interface FROM paineis_de_interface WHERE nome_painel_de_interface = "todos_grupos"));
-		INSERT INTO autorizacoes (nome_autorizacao, id_papel, id_paineis_de_interface) VALUES ("Coordenador(a) pode inserir participante",(SELECT id_chave_papel FROM papeis where nome_papel="coordenador(a)"),(SELECT id_chave_painel_de_interface FROM paineis_de_interface WHERE nome_painel_de_interface = "insercao_participante"));
+		INSERT INTO autorizacoes (nome_autorizacao, id_papel, id_painel_de_interface) VALUES ("Coordenador(a) pode votar, inscrever, fazer destaque e inserir proposta",(SELECT id_chave_papel FROM papeis where nome_papel="coordenador(a)"),(SELECT id_chave_painel_de_interface FROM paineis_de_interface WHERE nome_painel_de_interface = "insercao_proposta_votacao_inscricao_destaque"));
+		INSERT INTO autorizacoes (nome_autorizacao, id_papel, id_painel_de_interface) VALUES ("Coordenador(a) pode mudar o status da reunião",(SELECT id_chave_papel FROM papeis where nome_papel="coordenador(a)"),(SELECT id_chave_painel_de_interface FROM paineis_de_interface WHERE nome_painel_de_interface = "mudanca_status"));
+		INSERT INTO autorizacoes (nome_autorizacao, id_papel, id_painel_de_interface) VALUES ("Coordenador(a) tem acesso a todos os grupos",(SELECT id_chave_papel FROM papeis where nome_papel="coordenador(a)"),(SELECT id_chave_painel_de_interface FROM paineis_de_interface WHERE nome_painel_de_interface = "todos_grupos"));
+		INSERT INTO autorizacoes (nome_autorizacao, id_papel, id_painel_de_interface) VALUES ("Coordenador(a) pode inserir participante",(SELECT id_chave_papel FROM papeis where nome_papel="coordenador(a)"),(SELECT id_chave_painel_de_interface FROM paineis_de_interface WHERE nome_painel_de_interface = "insercao_participante"));
 
-		INSERT INTO autorizacoes (nome_autorizacao, id_papel, id_paineis_de_interface) VALUES ("Relator(a) pode votar, inscrever, fazer destaque e inserir proposta",(SELECT id_chave_papel FROM papeis where nome_papel="relator(a)"),(SELECT id_chave_painel_de_interface FROM paineis_de_interface WHERE nome_painel_de_interface = "insercao_proposta_votacao_inscricao_destaque"));
-		INSERT INTO autorizacoes (nome_autorizacao, id_papel, id_paineis_de_interface) VALUES ("Relator(a) pode mudar o status da reunião",(SELECT id_chave_papel FROM papeis where nome_papel="relator(a)"),(SELECT id_chave_painel_de_interface FROM paineis_de_interface WHERE nome_painel_de_interface = "mudanca_status"));
-		INSERT INTO autorizacoes (nome_autorizacao, id_papel, id_paineis_de_interface) VALUES ("Relator(a) tem acesso a todos os grupos",(SELECT id_chave_papel FROM papeis where nome_papel="relator(a)"),(SELECT id_chave_painel_de_interface FROM paineis_de_interface WHERE nome_painel_de_interface = "todos_grupos"));
-		INSERT INTO autorizacoes (nome_autorizacao, id_papel, id_paineis_de_interface) VALUES ("Relator(a) pode inserir participante",(SELECT id_chave_papel FROM papeis where nome_papel="relator(a)"),(SELECT id_chave_painel_de_interface FROM paineis_de_interface WHERE nome_painel_de_interface = "insercao_participante"));
+		INSERT INTO autorizacoes (nome_autorizacao, id_papel, id_painel_de_interface) VALUES ("Relator(a) pode votar, inscrever, fazer destaque e inserir proposta",(SELECT id_chave_papel FROM papeis where nome_papel="relator(a)"),(SELECT id_chave_painel_de_interface FROM paineis_de_interface WHERE nome_painel_de_interface = "insercao_proposta_votacao_inscricao_destaque"));
+		INSERT INTO autorizacoes (nome_autorizacao, id_papel, id_painel_de_interface) VALUES ("Relator(a) pode mudar o status da reunião",(SELECT id_chave_papel FROM papeis where nome_papel="relator(a)"),(SELECT id_chave_painel_de_interface FROM paineis_de_interface WHERE nome_painel_de_interface = "mudanca_status"));
+		INSERT INTO autorizacoes (nome_autorizacao, id_papel, id_painel_de_interface) VALUES ("Relator(a) tem acesso a todos os grupos",(SELECT id_chave_papel FROM papeis where nome_papel="relator(a)"),(SELECT id_chave_painel_de_interface FROM paineis_de_interface WHERE nome_painel_de_interface = "todos_grupos"));
+		INSERT INTO autorizacoes (nome_autorizacao, id_papel, id_painel_de_interface) VALUES ("Relator(a) pode inserir participante",(SELECT id_chave_papel FROM papeis where nome_papel="relator(a)"),(SELECT id_chave_painel_de_interface FROM paineis_de_interface WHERE nome_painel_de_interface = "insercao_participante"));
 		
-		INSERT INTO autorizacoes (nome_autorizacao, id_papel, id_paineis_de_interface) VALUES ("Participante pode votar, inscrever, fazer destaque e inserir proposta",(SELECT id_chave_papel FROM papeis where nome_papel="participante"),(SELECT id_chave_painel_de_interface FROM paineis_de_interface WHERE nome_painel_de_interface = "insercao_proposta_votacao_inscricao_destaque"));
-		INSERT INTO autorizacoes (nome_autorizacao, id_papel, id_paineis_de_interface) VALUES ("Participante tem acesso apenas a seu próprio grupo",(SELECT id_chave_papel FROM papeis where nome_papel="participante"),(SELECT id_chave_painel_de_interface FROM paineis_de_interface WHERE nome_painel_de_interface = "meu_grupo"));
+		INSERT INTO autorizacoes (nome_autorizacao, id_papel, id_painel_de_interface) VALUES ("Participante pode votar, inscrever, fazer destaque e inserir proposta",(SELECT id_chave_papel FROM papeis where nome_papel="participante"),(SELECT id_chave_painel_de_interface FROM paineis_de_interface WHERE nome_painel_de_interface = "insercao_proposta_votacao_inscricao_destaque"));
+		INSERT INTO autorizacoes (nome_autorizacao, id_papel, id_painel_de_interface) VALUES ("Participante tem acesso apenas a seu próprio grupo",(SELECT id_chave_papel FROM papeis where nome_papel="participante"),(SELECT id_chave_painel_de_interface FROM paineis_de_interface WHERE nome_painel_de_interface = "meu_grupo"));
 
 
 		CREATE TABLE eixos (
@@ -124,9 +128,9 @@ DROP TABLE IF EXISTS paineis_de_interface;
 			momento_da_transicao TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6),
 			id_tipo_de_status INT,
 			id_grupo INT,
+			FOREIGN KEY (nome_transicao_de_status) REFERENCES tipos_de_status(nome_tipo_de_status),
 			FOREIGN KEY (id_grupo) REFERENCES grupos(id_chave_grupo),
-			FOREIGN KEY (id_tipo_de_status) REFERENCES tipos_de_status(id_chave_tipo_de_status),
-			UNIQUE(nome_transicao_de_status)
+			FOREIGN KEY (id_tipo_de_status) REFERENCES tipos_de_status(id_chave_tipo_de_status)
 		);
 
 
@@ -158,6 +162,7 @@ DROP TABLE IF EXISTS paineis_de_interface;
 		CREATE TABLE participantes_papeis (
 				id_chave_participante_papel INT AUTO_INCREMENT PRIMARY KEY,
 				nome_participante_papel VARCHAR(500),
+				email VARCHAR(1000),
 			id_papel int,
 			id_participante int,
 			unique(nome_participante_papel),
@@ -454,6 +459,26 @@ END WHILE;
 
 END //
 
+DROP PROCEDURE IF EXISTS  inicializa_status_dos_grupos;
+
+CREATE PROCEDURE inicializa_status_dos_grupos(status varchar(100))
+BEGIN
+
+
+DECLARE n_grupos INT;
+DECLARE indice_grupos INT;
+DECLARE chave_do_grupo INT;
+
+SELECT COUNT(*) INTO n_grupos FROM grupos;
+SET indice_grupos=0;
+
+WHILE indice_grupos < n_grupos DO
+		SELECT id_chave_grupo INTO chave_do_grupo FROM grupos LIMIT 1 OFFSET indice_grupos;
+		INSERT INTO transicoes_de_status (nome_transicao_de_status, id_tipo_de_status, id_grupo) VALUES (status, (SELECT id_chave_tipo_de_status FROM tipos_de_status WHERE nome_tipo_de_status=status), chave_do_grupo);
+		SET indice_grupos = indice_grupos + 1;
+END WHILE;
+
+END //
 
 DELIMITER ;
 
@@ -634,4 +659,7 @@ INSERT INTO participantes_papeis (nome_participante_papel, id_participante, id_p
 INSERT INTO participantes_papeis (nome_participante_papel, id_participante, id_papel) VALUES ("Thiago Ribeiro-participante", (SELECT id_chave_participante from participantes where nome_participante = "Thiago Ribeiro"), (SELECT id_chave_papel from papeis where nome_papel = "participante"));
 INSERT INTO participantes_papeis (nome_participante_papel, id_participante, id_papel) VALUES ("Valentina Rodrigues-participante", (SELECT id_chave_participante from participantes where nome_participante = "Valentina Rodrigues"), (SELECT id_chave_papel from papeis where nome_papel = "participante"));
 INSERT INTO participantes_papeis (nome_participante_papel, id_participante, id_papel) VALUES ("Victor Rodrigues-participante", (SELECT id_chave_participante from participantes where nome_participante = "Victor Rodrigues"), (SELECT id_chave_papel from papeis where nome_papel = "participante"));
+
+CALL distribui_grupos();
+CALL inicializa_status_dos_grupos("em espera");
 commit;
