@@ -42,7 +42,6 @@ where
     order by nome_grupo, nome_participante, nome_papel, nome_painel_de_interface;";
 
 $result_inicial = $conn->query($sql_inicial);
-
 if ($result_inicial->num_rows > 0) {
 	$papeis="";
 	$paineis="";
@@ -69,6 +68,37 @@ $paineis = trim($paineis);
 // echo "(".$nome_participante_param.")<br>";
 // echo "(".$papeis.")<br>";
 // echo "(".$paineis.")";
+
+
+
+
+
+$sql_transicao ="
+select
+	id_tipo_de_status,
+    nome_tipo_de_status
+from
+	transicoes_de_status as ts,
+	tipos_de_status,
+	grupos
+where
+    ts.id_grupo = id_chave_grupo and
+	ts.id_tipo_de_status = id_chave_tipo_de_status and
+	nome_grupo = '".$nome_grupo_param."'
+	order by momento_da_transicao desc limit 1;";
+
+$result_transicao = $conn->query($sql_transicao);
+
+if ($result_transicao->num_rows > 0) {
+    while ($row_transicao = $result_transicao->fetch_assoc()) {
+		$status_transicao = $row_transicao["nome_tipo_de_status"];
+		//echo $status_transicao;
+    }
+} else {
+    echo "Nenhum resultado encontrado.";
+}
+
+
 
 
 // exit();
@@ -129,12 +159,11 @@ if ($result->num_rows > 0) {
 
 echo '
 <!DOCTYPE html>
-<html>
+<html lang="pt">
 	<head>
 		<title>
-PHP
+CLNST
 		</title>
-	</head>
 <style>
 
 body {
@@ -162,8 +191,8 @@ body {
   height: 60%;
   border: 3px solid blue;
   overflow-x: hidden;
-  transition: transform 0.5s ease;
   scroll-behavior: smooth;
+  transition: scroll-behavior 0.5s;  
   background-color: lightgray;
 }
 
@@ -399,7 +428,8 @@ text-align: center;
 }
 
 
-</style>
+</style>	</head>
+
 
 <body>
 <div class="entrada_de_dados">
@@ -409,8 +439,8 @@ if (strpos($paineis, "mudanca_status")){
 		<tr class="linha_muda_status">
 		<td class="cell_caption_mudanca_status ">Mude o Status aqui <b style="color: yellow; font-size: 2rem">&rarr;</b> </td>
 		<td><button id="muda_status_propostas" class="botoes_status" onclick="">Abre para Propostas</button></td>
-		<td><button id="muda_status_leitura" class="botoes_status" onclick="">Leitura e Destaques</button></td>
-		<td><button id="muda_status_aguarde" class="botoes_status" onclick="">Inscrições para fala</button></td>
+		<td><button id="muda_status_leitura" class="botoes_status" onclick="abre_destaques_e_votacoes()">Destaques e Votações</button></td>
+		<td><button id="muda_status_inscricoes" class="botoes_status" onclick="">Inscrições para fala</button></td>
 		<td><button id="muda_status_aguarde" class="botoes_status" onclick="">Aguarde<br>por favor</button></td>
 		</tr>
 		';
@@ -441,7 +471,7 @@ if (strpos($paineis, "todos_grupos")){
 			<button id="adiciona_proposta2" class="botoes" onclick="checa_status(`'.$nome_grupo_param.'`)">Sincroniza</button>
 		</td>
 		<td class="cell_direita">
-			<img height="60px" src="FUNDACENTRO-RSDATA.jpg">
+			<img height="60" src="FUNDACENTRO-RSDATA.jpg" alt="logo da fundacentro">
 		</td>
 	</tr>
 	<tr class="linha_muda_status">
@@ -489,7 +519,7 @@ echo '
 
 if ($velho_grupo == "" || $campos[$chave][0] != $velho_grupo){
 echo '
-    <div class="carousel-item active grupo" data-ordem="'.$conta_grupos.'" id="'.$campos[$chave][0].'">
+    <div class="carousel-item active grupo" data-ordem="'.$conta_grupos.'" id="'.str_replace(" ", "_", $campos[$chave][0]).'">
 	  <table class="tabela_do_grupo">
 	  <tr>
       <td><b class="titulo">'.$campos[$chave][0].'<br></b><b class="subtitulo">(participação '.$campos[$chave][6].')</b></td>
@@ -502,7 +532,7 @@ echo '
 <tr>
 <td colspan="2">
 		<div class="proposta" >
-		<table class="tabela_interna_da_proposta" width="100%">
+		<table class="tabela_interna_da_proposta" style="width: 100%">
 			<tr>
 				<td class="titulo_proposta borda_direita">			
 						'.$campos[$chave][2].'
@@ -510,17 +540,17 @@ echo '
 				<td class="texto_proposta borda_esquerda">
 						'.$campos[$chave][4].'
 				</td>
-			<tr>
+			</tr>
 			<tr>
 				<td class="horario_proposta borda_direita">
 					'.str_replace(" ", "<br>",$campos[$chave][3]).'
 				</td>
 				<td class="borda_esquerda">';
 
-if (strpos($paineis, "insercao_proposta_votacao_inscricao_destaque") && $campos[$chave][0]==$nome_grupo_param){
+if (strpos($paineis, "insercao_proposta_votacao_inscricao_destaque") && $campos[$chave][0]==$nome_grupo_param && $status_transicao=="abrindo destaque ou votação"){
 echo '
 				<div>
-				<table width="100%" >
+				<table style="width: 100%" >
 				<tr>
 					<td><button id="abre_destaques" class="botoes_proposta" onclick="seta_status(`'.$nome_grupo.'`, `destaques de proposta`, '.$campos[$chave][8].')">Abre Destaques</button></td>
 					<td><button id="fecha_destaques" class="botoes_proposta" onclick="">Fecha Destaques</button></td>
@@ -556,6 +586,21 @@ echo' <button id="tras" class="carousel-control prev" onclick="changeSlide(-1)">
 echo '
 <script>
 
+function abre_destaques_e_votacoes(nome_grupo, status){
+			var resposta="";
+			var url="define_status.php?nome_grupo_param="+nome_grupo+"&status_param=abrindo destaque ou votação";
+			var oReq=new XMLHttpRequest();
+            oReq.open("GET", url, false);
+            oReq.onload = function (e) {
+                resposta=oReq.responseText;
+				document.getElementById("status").innerText = resposta;
+				location.reload();
+                //alert(resposta);
+            }
+                oReq.send();
+
+}
+
 function seta_status(nome_grupo, status, proposta){
 			var resposta="";
 			var url="define_status.php?nome_grupo_param="+nome_grupo+"&status_param="+status+"&proposta_param="+proposta;
@@ -576,13 +621,14 @@ function checa_status(nome_grupo){
             oReq.open("GET", url, false);
             oReq.onload = function (e) {
                 resposta=oReq.responseText;
+				status_do_grupo=resposta;
 				document.getElementById("status").innerText = resposta;
                 //alert(resposta);
             }
                 oReq.send();
 }
 
-
+var status_do_grupo="'.$status_transicao.'";
 var numero_grupos = '.$numero_grupos.';
 var nome_grupo_param = "'.$nome_grupo_param.'";
 var carrosel       = document.getElementById("carrosel");
@@ -591,15 +637,33 @@ var divs_do_carrosel = document.getElementsByClassName("carrosel_item");
 
 var botao_tras = document.getElementById("tras");
 var botao_frente = document.getElementById("frente");
-
+var posicaoAlvo= -1;
 var scroll_dos_grupos = [];
 var lista_de_grupos = document.getElementsByClassName("grupo");
 var largura_item = tripa_carrosel.getBoundingClientRect().width / numero_grupos;
 
 // botao_tras.style.top = carrosel.getBoundingClientRect().bottom; 
 
-checa_status("'.$nome_grupo_param.'");
+// carrosel.addEventListener("transitionend",function () {alert("tete"); carrosel.style.overflowX="hidden"} ); // nao estah funcionando
 
+
+// Função para verificar se a animação de rolagem suave terminou
+function verificarTerminoAnimacao() {
+// alert(posicaoAlvo);
+  //console.log(carrosel.scrollLeft);
+  if (carrosel.scrollLeft >= posicaoAlvo) {
+	carrosel.style.overflowX="hidden";
+   // console.log("A animação de scroll terminou!");
+  }
+}
+
+// Adicionar um ouvinte de evento ao elemento para o evento scroll
+carrosel.addEventListener("scroll", verificarTerminoAnimacao);
+
+
+
+document.getElementById("status").innerText = status_do_grupo; 
+//alert(status_do_grupo);
 function inicializa_posicoes(){
 	for (var i=0; i < lista_de_grupos.length; i++){
 		var elemento = lista_de_grupos[i];
@@ -609,13 +673,22 @@ function inicializa_posicoes(){
 }
 
 function changeSlide(indice){
+
 	
-	carrosel.scrollLeft = carrosel.scrollLeft - indice * largura_item;
+	carrosel.style.overflowX="scroll";
+	posicaoAlvo =  carrosel.scrollLeft - indice * largura_item;
+	carrosel.scrollLeft = posicaoAlvo;
+//    setTimeout(function () {carrosel.style.overflowX="hidden"}, 2000); // gambi para permitir o scroll sem deixar o usuário usar... se o usuário for rápido ele consegue. Só é necessário no Firefox... no Chromium ele permite usar o scrollLeft mesmo com overflow hidden. o Settimeout eh necessario por causa do tempo de animação. 
 
 }
 
 function va_pro_meu_grupo(nome_grupo_param){
-	carrosel.scrollLeft = document.getElementById(nome_grupo_param).getAttribute("data-scroll");
+// alert( document.getElementById(nome_grupo_param.replace(/ /g,"_")).getAttribute("data-scroll"));
+
+	carrosel.style.overflowX="scroll";
+	posicaoAlvo=document.getElementById(nome_grupo_param.replace(/ /g,"_")).getAttribute("data-scroll");
+	carrosel.scrollLeft =posicaoAlvo;
+//	setTimeout(function () {carrosel.style.overflowX="hidden"}, 2000);
 }
 
 

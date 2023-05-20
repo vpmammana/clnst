@@ -1,5 +1,6 @@
 start transaction;
 
+DROP TABLE IF EXISTS transicoes_de_status;
 DROP TABLE IF EXISTS versoes;
 DROP TABLE IF EXISTS propostas;
 DROP TABLE IF EXISTS grupos_diretrizes;
@@ -9,7 +10,6 @@ DROP TABLE IF EXISTS eixos;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS participantes_papeis;
 DROP TABLE IF EXISTS participantes;
-DROP TABLE IF EXISTS transicoes_de_status;
 DROP TABLE IF EXISTS grupos;
 DROP TABLE IF EXISTS autorizacoes;
 DROP TABLE IF EXISTS papeis;
@@ -40,7 +40,8 @@ DROP TABLE IF EXISTS paineis_de_interface;
 		INSERT INTO tipos_de_status (nome_tipo_de_status) VALUES ("submissão de proposta"); #estará em condições para receber propostas digitadas pelo usuário
 		INSERT INTO tipos_de_status (nome_tipo_de_status) VALUES ("em espera"); #iddle
 		INSERT INTO tipos_de_status (nome_tipo_de_status) VALUES ("leitura das propostas"); 
-		INSERT INTO tipos_de_status (nome_tipo_de_status) VALUES ("destaques de proposta"); 
+		INSERT INTO tipos_de_status (nome_tipo_de_status) VALUES ("abrindo destaque ou votação"); 
+		INSERT INTO tipos_de_status (nome_tipo_de_status) VALUES ("destaques em proposta"); 
 		INSERT INTO tipos_de_status (nome_tipo_de_status) VALUES ("inscricoes para fala");
 		INSERT INTO tipos_de_status (nome_tipo_de_status) VALUES ("votação das propostas nos GTs");
 		INSERT INTO tipos_de_status (nome_tipo_de_status) VALUES ("votação das propostas nas Plenárias");

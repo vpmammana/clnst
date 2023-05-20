@@ -1,0 +1,830 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+	<head>
+		<title>
+CLNST
+		</title>
+<style>
+
+body {
+  background-image: linear-gradient(to bottom, #222222, #000000);
+}
+
+.entrada_de_dados {
+  position: absolute;
+  top: 61%;
+  width: 95%;
+  height: 35%;
+  background-color: darkgreen;
+  border-radius: 3%/10%;
+  margin: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 1%;
+}
+
+.carousel {
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 60%;
+  border: 3px solid blue;
+  overflow-x: hidden;
+  transition: transform 0.5s ease;
+  scroll-behavior: smooth;
+  background-color: lightgray;
+}
+
+.carousel-items {
+  display: flex;
+  width: 600%;
+  height: 99.5%;
+  transition: transform 0.5s ease;
+  border: 3px solid black;
+  justify-content: space-between;
+}
+
+.carousel-item {
+  width: 15%; 
+  height: 98%;
+  padding: 0.1%;
+  box-sizing: border-box;
+  border: 3px solid darkgray;
+  flex-grow: 1;
+  transition: transform 0.5s ease;
+  margin: 0 1%;
+  border-radius: 2%/6%;
+  background-color: gray;
+  transform: translateZ(0);
+  transform-style: preserve-3d;
+  overflow-y: scroll;
+}
+
+.proposta{
+	border-bottom: 12px solid gray;
+	background-color: rgba(25,100,100,0.8);
+	color: white;
+	padding: 1%;
+}
+
+.titulo_proposta {
+	font-size:1.5rem;
+	color: white;
+	font-weight: bold;
+
+}
+.texto_proposta {
+	font-size:1.3rem;
+	color: white;
+
+}
+.horario_proposta {
+	font-size:1.1rem;
+	color: rgb(0,0,0,0.9);
+}
+
+.carousel-control {
+  position: absolute;
+  top: 55%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 4rem;
+}
+
+
+.carousel-control.prev {
+  left: 0%;
+}
+.carousel-control.next {
+  right: 0%;
+}
+
+.carousel-item.active {
+  display: block;
+}
+
+.titulo {
+	font-size: 2rem;
+	font-weight: bold;
+}
+
+.subtitulo {
+	font-size: 1.5rem;
+	color: blue;
+}
+
+
+.diretriz {
+	font-size: 1.6rem;
+	font-weight: bold;
+}
+
+.tabela_do_grupo {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.tabela_interna_da_proposta {
+	border-collapse: collapse;
+
+}
+
+.tabela_do_participante {
+	width: 100%;
+	height: 100%;
+	border-collapse: collapse;
+	table-layout: fixed;
+	border: 1px solid black;
+}
+
+.tabela_do_participante td {
+	width: 1%;
+	word-wrap: break-word;
+	border: 1px solid black;
+}
+.botoes_proposta {
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+  border: none;
+  padding: 1px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: block;
+  margin: 0;
+  width: 98%;
+}
+
+.botoes_proposta:hover {
+	background-color: rgba(0,0,0,0.5);
+}
+
+.botoes_proposta:active {
+	background-color: rgba(0,0,1,0.5);
+	border: 2px solid yellow;
+}
+.botoes_status {
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+  border: none;
+  padding: 2px;
+  cursor: pointer;
+  font-size: 2rem;
+  display: block;
+  margin: 0;
+  width: 98%;
+}
+
+.botoes_status:hover {
+	background-color: rgba(0,0,0,0.5);
+}
+
+.botoes_status:active {
+	background-color: rgba(0,0,1,0.5);
+	border: 2px solid yellow;
+}
+.botoes {
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+  border: none;
+  padding: 2px;
+  cursor: pointer;
+  font-size: 2rem;
+  display: block;
+  margin: 0 auto;
+  width: 98%;
+}
+
+.botoes:hover {
+	background-color: rgba(0,0,0,0.5);
+}
+
+.botoes:active {
+	background-color: rgba(0,0,1,0.5);
+	border: 2px solid yellow;
+}
+
+.cell_centrada {
+	text-align: center;
+	vertical-align: middle;
+}
+
+.cell_left {
+	text-align: left;
+	vertical-align: middle;
+}
+
+.cell_identidade {
+	font-size: 2rem;
+	font-weight: bold;
+}
+
+.cell_caption_mudanca_status {
+	font-size: 1.5rem;
+	font-weight: bold;
+}
+
+.cell_papel {
+	font-size: 1.4rem;
+	font-weight: bold;
+}
+
+.margem {
+text-align: center;
+}
+
+.cell_status {
+	font-size: 1.5rem;
+	background-color: blue;
+	color: white;
+	font-weight: bold;
+	padding: 0.5%;
+	text-align: center;
+	width: 60%;
+	margin: 0 auto;
+}
+
+.linha_muda_status {
+			height: 10px;
+}
+
+.cell_direita {
+	text-align: right;
+	vertical-align: middle;
+}
+
+.borda_direita {
+    border-right: 1px solid black;
+	padding-right: 10px;
+}
+
+.borda_esquerda {
+    border-left: 1px solid black;
+	padding-left: 10px;
+}
+
+
+</style>	</head>
+
+
+<body>
+<div class="entrada_de_dados">
+<table class="tabela_do_participante"><tr class="linha_muda_status">
+		<td class="cell_left cell_identidade">
+			Enzo Ribeiro
+		</td>
+		<td class="cell_centrada">
+			<button id="adiciona_proposta" class="botoes" onclick="">Proposta +</button>
+		</td>
+		<td class="cell_centrada">
+		</td>
+		<td class="cell_centrada">
+			<button id="adiciona_proposta2" class="botoes" onclick="checa_status(`Grupo 4`)">Sincroniza</button>
+		</td>
+		<td class="cell_direita">
+			<img height="60" src="FUNDACENTRO-RSDATA.jpg" alt="logo da fundacentro">
+		</td>
+	</tr>
+	<tr class="linha_muda_status">
+		<td class="cell_left cell_papel">
+			participante
+		</td>
+		<td>
+		</td>
+		<td>
+		</td>
+		<td class="cell_centrada margem">
+			<div id="status" class="cell_status"></div>
+		</td>
+		<td class="cell_centrada cell_identidade">
+			CLNST
+		</td>
+	</tr>
+	<tr>
+		<td>
+		</td>
+		<td>
+		</td>
+		<td>
+		</td>
+		<td>
+		</td>
+		<td>
+		</td>
+	</tr>
+
+</table>
+</div>
+<div id="carrosel" class="carousel">
+  <div id="tripa_carrosel" class="carousel-items">
+    <div class="carousel-item active grupo" data-ordem="0" id="Grupo_1">
+	  <table class="tabela_do_grupo">
+	  <tr>
+      <td><b class="titulo">Grupo 1<br></b><b class="subtitulo">(participação presencial)</b></td>
+	  <td><b class="diretriz">Propor política pública intersetorial para a promoção da Saúde do Trabalhador, conforme Constituição Federal</b></td>
+	  </tr>
+<tr>
+<td colspan="2">
+		<div class="proposta" >
+		<table class="tabela_interna_da_proposta" width="100%">
+			<tr>
+				<td class="titulo_proposta borda_direita">			
+						Proposta 1
+				</td>
+				<td class="texto_proposta borda_esquerda">
+						mudanca2
+				</td>
+			<tr>
+			<tr>
+				<td class="horario_proposta borda_direita">
+					2023-05-20<br>10:19:23.400955
+				</td>
+				<td class="borda_esquerda">
+				</td>
+			</tr>
+		</table>
+		</div>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+		<div class="proposta" >
+		<table class="tabela_interna_da_proposta" width="100%">
+			<tr>
+				<td class="titulo_proposta borda_direita">			
+						Proposta 2
+				</td>
+				<td class="texto_proposta borda_esquerda">
+						Tornar o SUS mais amplo
+				</td>
+			<tr>
+			<tr>
+				<td class="horario_proposta borda_direita">
+					2023-05-20<br>10:19:23.381483
+				</td>
+				<td class="borda_esquerda">
+				</td>
+			</tr>
+		</table>
+		</div>
+</td>
+</tr>
+</table>
+</div>
+    <div class="carousel-item active grupo" data-ordem="1" id="Grupo_2">
+	  <table class="tabela_do_grupo">
+	  <tr>
+      <td><b class="titulo">Grupo 2<br></b><b class="subtitulo">(participação presencial)</b></td>
+	  <td><b class="diretriz">Elaborar propostas para aumentar a potência do SUS nas suas atribuições em Saúde do Trabalhador, em particular da vigilância e da capacidade diagnóstica de agravos relacionados ao trabalho</b></td>
+	  </tr>
+<tr>
+<td colspan="2">
+		<div class="proposta" >
+		<table class="tabela_interna_da_proposta" width="100%">
+			<tr>
+				<td class="titulo_proposta borda_direita">			
+						Proposta 3
+				</td>
+				<td class="texto_proposta borda_esquerda">
+						Incluir uma pauta multi-setorial no SUS
+				</td>
+			<tr>
+			<tr>
+				<td class="horario_proposta borda_direita">
+					2023-05-20<br>10:19:23.384768
+				</td>
+				<td class="borda_esquerda">
+				</td>
+			</tr>
+		</table>
+		</div>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+		<div class="proposta" >
+		<table class="tabela_interna_da_proposta" width="100%">
+			<tr>
+				<td class="titulo_proposta borda_direita">			
+						Proposta 3a
+				</td>
+				<td class="texto_proposta borda_esquerda">
+						Incluir uma pauta multi-setorial no SUS
+				</td>
+			<tr>
+			<tr>
+				<td class="horario_proposta borda_direita">
+					2023-05-20<br>10:19:23.385543
+				</td>
+				<td class="borda_esquerda">
+				</td>
+			</tr>
+		</table>
+		</div>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+		<div class="proposta" >
+		<table class="tabela_interna_da_proposta" width="100%">
+			<tr>
+				<td class="titulo_proposta borda_direita">			
+						Proposta 3b
+				</td>
+				<td class="texto_proposta borda_esquerda">
+						Incluir uma pauta multi-setorial no SUS
+				</td>
+			<tr>
+			<tr>
+				<td class="horario_proposta borda_direita">
+					2023-05-20<br>10:19:23.386354
+				</td>
+				<td class="borda_esquerda">
+				</td>
+			</tr>
+		</table>
+		</div>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+		<div class="proposta" >
+		<table class="tabela_interna_da_proposta" width="100%">
+			<tr>
+				<td class="titulo_proposta borda_direita">			
+						Proposta 3c
+				</td>
+				<td class="texto_proposta borda_esquerda">
+						Incluir uma pauta multi-setorial no SUS
+				</td>
+			<tr>
+			<tr>
+				<td class="horario_proposta borda_direita">
+					2023-05-20<br>10:19:23.388429
+				</td>
+				<td class="borda_esquerda">
+				</td>
+			</tr>
+		</table>
+		</div>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+		<div class="proposta" >
+		<table class="tabela_interna_da_proposta" width="100%">
+			<tr>
+				<td class="titulo_proposta borda_direita">			
+						Proposta 3d
+				</td>
+				<td class="texto_proposta borda_esquerda">
+						Incluir uma pauta multi-setorial no SUS
+				</td>
+			<tr>
+			<tr>
+				<td class="horario_proposta borda_direita">
+					2023-05-20<br>10:19:23.389274
+				</td>
+				<td class="borda_esquerda">
+				</td>
+			</tr>
+		</table>
+		</div>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+		<div class="proposta" >
+		<table class="tabela_interna_da_proposta" width="100%">
+			<tr>
+				<td class="titulo_proposta borda_direita">			
+						Proposta 3f
+				</td>
+				<td class="texto_proposta borda_esquerda">
+						Incluir uma pauta multi-setorial no SUS
+				</td>
+			<tr>
+			<tr>
+				<td class="horario_proposta borda_direita">
+					2023-05-20<br>10:19:23.390129
+				</td>
+				<td class="borda_esquerda">
+				</td>
+			</tr>
+		</table>
+		</div>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+		<div class="proposta" >
+		<table class="tabela_interna_da_proposta" width="100%">
+			<tr>
+				<td class="titulo_proposta borda_direita">			
+						Proposta 3g
+				</td>
+				<td class="texto_proposta borda_esquerda">
+						Incluir uma pauta multi-setorial no SUS
+				</td>
+			<tr>
+			<tr>
+				<td class="horario_proposta borda_direita">
+					2023-05-20<br>10:19:23.390959
+				</td>
+				<td class="borda_esquerda">
+				</td>
+			</tr>
+		</table>
+		</div>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+		<div class="proposta" >
+		<table class="tabela_interna_da_proposta" width="100%">
+			<tr>
+				<td class="titulo_proposta borda_direita">			
+						Proposta 3h
+				</td>
+				<td class="texto_proposta borda_esquerda">
+						Incluir uma pauta multi-setorial no SUS
+				</td>
+			<tr>
+			<tr>
+				<td class="horario_proposta borda_direita">
+					2023-05-20<br>10:19:23.392367
+				</td>
+				<td class="borda_esquerda">
+				</td>
+			</tr>
+		</table>
+		</div>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+		<div class="proposta" >
+		<table class="tabela_interna_da_proposta" width="100%">
+			<tr>
+				<td class="titulo_proposta borda_direita">			
+						Proposta 3i
+				</td>
+				<td class="texto_proposta borda_esquerda">
+						Incluir uma pauta multi-setorial no SUS
+				</td>
+			<tr>
+			<tr>
+				<td class="horario_proposta borda_direita">
+					2023-05-20<br>10:19:23.393213
+				</td>
+				<td class="borda_esquerda">
+				</td>
+			</tr>
+		</table>
+		</div>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+		<div class="proposta" >
+		<table class="tabela_interna_da_proposta" width="100%">
+			<tr>
+				<td class="titulo_proposta borda_direita">			
+						Proposta 3j
+				</td>
+				<td class="texto_proposta borda_esquerda">
+						Incluir uma pauta multi-setorial no SUS
+				</td>
+			<tr>
+			<tr>
+				<td class="horario_proposta borda_direita">
+					2023-05-20<br>10:19:23.394014
+				</td>
+				<td class="borda_esquerda">
+				</td>
+			</tr>
+		</table>
+		</div>
+</td>
+</tr>
+</table>
+</div>
+    <div class="carousel-item active grupo" data-ordem="2" id="Grupo_3">
+	  <table class="tabela_do_grupo">
+	  <tr>
+      <td><b class="titulo">Grupo 3<br></b><b class="subtitulo">(participação presencial)</b></td>
+	  <td><b class="diretriz">Elaborar propostas para aumentar efetividade da participação e controle social no SUS</b></td>
+	  </tr>
+<tr>
+<td colspan="2">
+		<div class="proposta" >
+		<table class="tabela_interna_da_proposta" width="100%">
+			<tr>
+				<td class="titulo_proposta borda_direita">			
+						Proposta 4
+				</td>
+				<td class="texto_proposta borda_esquerda">
+						Rever as medidas privatizantes do SUS no que se refere à saúde do trabalhador
+				</td>
+			<tr>
+			<tr>
+				<td class="horario_proposta borda_direita">
+					2023-05-20<br>10:19:23.394806
+				</td>
+				<td class="borda_esquerda">
+				</td>
+			</tr>
+		</table>
+		</div>
+</td>
+</tr>
+</table>
+</div>
+    <div class="carousel-item active grupo" data-ordem="3" id="Grupo_4">
+	  <table class="tabela_do_grupo">
+	  <tr>
+      <td><b class="titulo">Grupo 4<br></b><b class="subtitulo">(participação remota)</b></td>
+	  <td><b class="diretriz">Propor política pública intersetorial para a promoção da Saúde do Trabalhador, conforme Constituição Federal</b></td>
+	  </tr>
+<tr>
+<td colspan="2">
+		<div class="proposta" >
+		<table class="tabela_interna_da_proposta" width="100%">
+			<tr>
+				<td class="titulo_proposta borda_direita">			
+						Proposta 5
+				</td>
+				<td class="texto_proposta borda_esquerda">
+						Pensar formas de integrar ações do MTE com o MS
+				</td>
+			<tr>
+			<tr>
+				<td class="horario_proposta borda_direita">
+					2023-05-20<br>10:19:23.395991
+				</td>
+				<td class="borda_esquerda">
+				</td>
+			</tr>
+		</table>
+		</div>
+</td>
+</tr>
+</table>
+</div>
+    <div class="carousel-item active grupo" data-ordem="4" id="Grupo_5">
+	  <table class="tabela_do_grupo">
+	  <tr>
+      <td><b class="titulo">Grupo 5<br></b><b class="subtitulo">(participação remota)</b></td>
+	  <td><b class="diretriz">Elaborar propostas para aumentar a potência do SUS nas suas atribuições em Saúde do Trabalhador, em particular da vigilância e da capacidade diagnóstica de agravos relacionados ao trabalho</b></td>
+	  </tr>
+<tr>
+<td colspan="2">
+		<div class="proposta" >
+		<table class="tabela_interna_da_proposta" width="100%">
+			<tr>
+				<td class="titulo_proposta borda_direita">			
+						Proposta 6
+				</td>
+				<td class="texto_proposta borda_esquerda">
+						Tornar a pauta de segurança do trabalho presente no dia a dia do SUS
+				</td>
+			<tr>
+			<tr>
+				<td class="horario_proposta borda_direita">
+					2023-05-20<br>10:19:23.396932
+				</td>
+				<td class="borda_esquerda">
+				</td>
+			</tr>
+		</table>
+		</div>
+</td>
+</tr>
+</table>
+</div>
+    <div class="carousel-item active grupo" data-ordem="5" id="Grupo_6">
+	  <table class="tabela_do_grupo">
+	  <tr>
+      <td><b class="titulo">Grupo 6<br></b><b class="subtitulo">(participação remota)</b></td>
+	  <td><b class="diretriz">Elaborar propostas para aumentar efetividade da participação e controle social no SUS</b></td>
+	  </tr>
+<tr>
+<td colspan="2">
+		<div class="proposta" >
+		<table class="tabela_interna_da_proposta" width="100%">
+			<tr>
+				<td class="titulo_proposta borda_direita">			
+						Proposta 7
+				</td>
+				<td class="texto_proposta borda_esquerda">
+						Melhor formas de notificação de acidentes de trabalho
+				</td>
+			<tr>
+			<tr>
+				<td class="horario_proposta borda_direita">
+					2023-05-20<br>10:19:23.398255
+				</td>
+				<td class="borda_esquerda">
+				</td>
+			</tr>
+		</table>
+		</div>
+</td>
+</tr>
+  </table>
+  </div>
+  </div>
+</div>
+<script>
+
+
+function abre_destaques_e_votacoes(nome_grupo, status){
+			var resposta="";
+			var url="define_status.php?nome_grupo_param="+nome_grupo+"&status_param=abrindo destaque ou votação";
+			var oReq=new XMLHttpRequest();
+            oReq.open("GET", url, false);
+            oReq.onload = function (e) {
+                resposta=oReq.responseText;
+				document.getElementById("status").innerText = resposta;
+				location.reload();
+                //alert(resposta);
+            }
+                oReq.send();
+
+}
+
+function seta_status(nome_grupo, status, proposta){
+			var resposta="";
+			var url="define_status.php?nome_grupo_param="+nome_grupo+"&status_param="+status+"&proposta_param="+proposta;
+			var oReq=new XMLHttpRequest();
+            oReq.open("GET", url, false);
+            oReq.onload = function (e) {
+                resposta=oReq.responseText;
+				document.getElementById("status").innerText = resposta;
+                //alert(resposta);
+            }
+                oReq.send();
+}
+
+function checa_status(nome_grupo){
+			var resposta="";
+			var url="verifica_status.php?nome_grupo_param="+nome_grupo;
+			var oReq=new XMLHttpRequest();
+            oReq.open("GET", url, false);
+            oReq.onload = function (e) {
+                resposta=oReq.responseText;
+				status_do_grupo=resposta;
+				document.getElementById("status").innerText = resposta;
+                //alert(resposta);
+            }
+                oReq.send();
+}
+
+var status_do_grupo="em espera";
+var numero_grupos = 6;
+var nome_grupo_param = "Grupo 4";
+var carrosel       = document.getElementById("carrosel");
+var tripa_carrosel = document.getElementById("tripa_carrosel");
+var divs_do_carrosel = document.getElementsByClassName("carrosel_item");
+
+var botao_tras = document.getElementById("tras");
+var botao_frente = document.getElementById("frente");
+
+var scroll_dos_grupos = [];
+var lista_de_grupos = document.getElementsByClassName("grupo");
+var largura_item = tripa_carrosel.getBoundingClientRect().width / numero_grupos;
+
+// botao_tras.style.top = carrosel.getBoundingClientRect().bottom; 
+
+document.getElementById("status").innerText = status_do_grupo; 
+//alert(status_do_grupo);
+function inicializa_posicoes(){
+	for (var i=0; i < lista_de_grupos.length; i++){
+		var elemento = lista_de_grupos[i];
+		elemento.setAttribute("data-scroll", i*largura_item);
+	}
+
+}
+
+function changeSlide(indice){
+	
+	carrosel.scrollLeft = carrosel.scrollLeft - indice * largura_item;
+
+}
+
+function va_pro_meu_grupo(nome_grupo_param){
+	carrosel.scrollLeft = document.getElementById(nome_grupo_param.replace(/ /g,"_")).getAttribute("data-scroll");
+}
+
+
+inicializa_posicoes();
+va_pro_meu_grupo(nome_grupo_param);
+
+</script>
+</body>
+</html>
