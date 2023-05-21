@@ -512,6 +512,7 @@ CALL mostra_ultimas_versoes_das_propostas_do_grupo("Grupo 1");
 
 CALL altera_propostas(1, "mudanca");
 CALL altera_propostas(1, "mudanca2");
+CALL altera_propostas(2, "teste de mudanca");
 
 #select * FROM versoes;
 CALL mostra_ultimas_versoes_das_propostas_do_grupo("Grupo 1");

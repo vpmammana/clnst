@@ -73,12 +73,10 @@ $paineis = trim($paineis);
 
 
 $status_transicao = "transição indefinida";
-$proposta_em_analise = "Proposta em análise indefinida";
 $sql_transicao ="
 select
 	id_tipo_de_status,
-    nome_tipo_de_status,
-	id_proposta
+    nome_tipo_de_status
 from
 	transicoes_de_status as ts,
 	tipos_de_status,
@@ -94,7 +92,6 @@ $result_transicao = $conn->query($sql_transicao);
 if ($result_transicao->num_rows > 0) {
     while ($row_transicao = $result_transicao->fetch_assoc()) {
 		$status_transicao = $row_transicao["nome_tipo_de_status"];
-		$proposta_em_analise = $row_transicao["id_proposta"];
 		//echo $status_transicao;
     }
 } else {
@@ -534,9 +531,6 @@ echo '
 	  $conta_grupos++;
 }
 
-if ($status_transicao == "destaques em proposta" && $campos[$chave][8]!=$proposta_em_analise) {}
-else
-{
 echo '
 <tr>
 <td colspan="2">
@@ -544,7 +538,7 @@ echo '
 		<table class="tabela_interna_da_proposta" style="width: 100%">
 			<tr>
 				<td class="titulo_proposta borda_direita">			
-						'.$campos[$chave][2].'('.$campos[$chave][8].')
+						'.$campos[$chave][2].'
 				</td>
 				<td class="texto_proposta borda_esquerda">
 						'.$campos[$chave][4].'
@@ -576,7 +570,7 @@ echo '
 		</div>
 </td>
 </tr>';
-}
+
 $velho_grupo = $campos[$chave][0]; // nome_grupo
 }
 echo '
@@ -630,9 +624,8 @@ function checa_status(nome_grupo){
 			var oReq=new XMLHttpRequest();
             oReq.open("GET", url, false);
             oReq.onload = function (e) {
-                resposta=oReq.responseText.split("@#$");
-				status_do_grupo=resposta[0];
-				proposta_em_analise = resposta[1];
+                resposta=oReq.responseText;
+				status_do_grupo=resposta;
 				document.getElementById("status").innerText = resposta;
                 //alert(resposta);
             }
@@ -640,7 +633,6 @@ function checa_status(nome_grupo){
 }
 
 var status_do_grupo="'.$status_transicao.'";
-var proposta_em_analise = "'.$proposta_em_analise.'";
 var numero_grupos = '.$numero_grupos.';
 var nome_grupo_param = "'.$nome_grupo_param.'";
 var carrosel       = document.getElementById("carrosel");

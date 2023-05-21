@@ -17,7 +17,8 @@ $campos=[];
 $sql ="
 select
 	id_tipo_de_status,
-    nome_tipo_de_status
+    nome_tipo_de_status,
+	id_proposta
 from
 	transicoes_de_status as ts,
 	tipos_de_status,
@@ -33,7 +34,8 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
 		$status = $row["nome_tipo_de_status"];
-		echo $status;
+		$id_proposta = $row["id_proposta"];
+		echo $status."@#$".$id_proposta;
     }
 } else {
     echo "Nenhum resultado encontrado.";
